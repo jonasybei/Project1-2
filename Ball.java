@@ -6,8 +6,8 @@ public class Ball {
     private double[] position = new double[2]; // x and y values
     private double velocity; //in m/s
     private double acceleration; // in m/s2
-    private double[] nexrtPosition = new double[2]; // x and y values
-    
+    private double[] nextPosition = new double[2]; // x and y values
+
 
     public int getSize() {
         return size;
@@ -29,7 +29,7 @@ public class Ball {
         return acceleration;
     }
 
-    public double[] getNexrtPosition() {
+    public double[] getNextPosition() {
         return nexrtPosition;
     }
 }
