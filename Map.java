@@ -11,8 +11,4 @@ public class Map {
         this.treeMap = atreeMap;
         this.sandMap = asandMap;
     }
-
-
-
-
 }

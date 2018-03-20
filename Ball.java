@@ -9,11 +9,6 @@ public class Ball {
     private double velocity; //in m/s
     private double acceleration; // in m/s2
     private double[] nextPosition = new double[2]; // x and y values
-<<<<<<< HEAD
-=======
-
->>>>>>> 824100c8a6c2c120f46699367b386080abf254d5
-
 
     public double getSize() {
         return size;
@@ -35,12 +30,7 @@ public class Ball {
         return acceleration;
     }
 
-<<<<<<< HEAD
-    public double[] getNexrtPosition() {
-        return nextPosition;
-=======
     public double[] getNextPosition() {
-        return nexrtPosition;
->>>>>>> 824100c8a6c2c120f46699367b386080abf254d5
+        return nextPosition;
     }
 }
