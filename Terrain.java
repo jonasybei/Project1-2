@@ -19,7 +19,7 @@ public class Terrain {
 			return ((Math.pow(x, 2) + Math.pow(y, 3))/100 + 6*Math.exp(-Math.pow(x, 2)-Math.pow(y, 2)));
 		} else if(terrain == 3) {
 			//abs(-x^3-y^3+5(-e^(-(x-2)^2-(y+2)^2)*10^2.5))-e^(-x^2-y^2)*10^2.8
-			return (Math.abs(-Math.pow(x, 3)-Math.pow(y, 3) + 5*(-Math.exp(-(Math.pow((x-2), 2)-Math.pow((y+2), 2)))*Math.pow(10, 2.5))) -Math.exp(-Math.pow(x, 2)-Math.pow(y, 2))*Math.pow(10, 2.8));
+			return (Math.abs(-Math.pow(x, 3)-Math.pow(y, 3) + 5*(-Math.exp(-(Math.pow((x-2), 2))-(Math.pow((y+2), 2)))*Math.pow(10, 2.5)))-Math.exp(-Math.pow(x, 2)-Math.pow(y, 2))*Math.pow(10, 2.8));
 		} else if (terrain == 4) {
 			//abs(x^2+y^3)/100+abs(6*e^(-x^2-y^2))
 			return (Math.abs(Math.pow(x, 2) + Math.pow(y, 3))/100 + Math.abs(6*Math.exp(-Math.pow(x, 2)-Math.pow(y, 2))));
@@ -31,6 +31,7 @@ public class Terrain {
 			return (Math.abs(x/y)/2);
 		}
 		return null;
+		//return null;
 	}
 
 
