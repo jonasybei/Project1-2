@@ -30,6 +30,7 @@ class Map {
         startPos = Terrain.startPos(t);
         endPos = Terrain.endPos(t);
     }
+<<<<<<< HEAD
 
     public int getTerrain() {
         return terrain;
@@ -50,4 +51,6 @@ class Map {
     public ArrayList<SandSpot> getSandMap() {
         return sandMap;
     }
+=======
+>>>>>>> 3bfce996481b6212659d267439b275d6bff56830
 }
