@@ -2,10 +2,8 @@ package com.mygdx.managers;
 
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.GameScreen;
-import com.mygdx.game.StartMenu;
+import com.badlogic.gdx.Gdx;
+import com.mygdx.game.*;
 
 public class CrazyPuttingGame extends Game{
 
@@ -18,13 +16,24 @@ public class CrazyPuttingGame extends Game{
         setScreen(new StartMenu(this));
     }
 
-    public void showGameScreen() {
-        System.out.println("Changing screen");
-        setScreen(new GameScreen(this));
+    public void showGameScreen(int level) {
+        setScreen(new GameScreen(this , level));
+    }
+
+    public void showModeScreen() {
+        setScreen(new ModeScreen(this));
+    }
+
+    public void showScoreScreen() {
+        setScreen(new ScoreScreen(this));
+    }
+
+    public void showLevelScreen(){
+        setScreen(new LevelScreen(this));
     }
 
     public void exitTheGame(){
-        System.out.println("exit");
+        Gdx.app.exit();
     }
 
 
