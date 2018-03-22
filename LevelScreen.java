@@ -119,7 +119,7 @@ public class LevelScreen extends InputAdapter implements Screen{
         this.level6Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x,float y){
-                game.showGameScreen(2);
+                game.showGameScreen(6);
             }
         });
         this.level6Button.pad(20);

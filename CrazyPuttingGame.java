@@ -7,6 +7,8 @@ import com.mygdx.game.*;
 
 public class CrazyPuttingGame extends Game{
 
+    private GameScreen game;
+
     @Override
     public void create() {
         showMenuScreen();
@@ -17,7 +19,8 @@ public class CrazyPuttingGame extends Game{
     }
 
     public void showGameScreen(int level) {
-        setScreen(new GameScreen(this , level));
+        this.game = new GameScreen(this,level);
+        setScreen(this.game);
     }
 
     public void showModeScreen() {
@@ -30,6 +33,14 @@ public class CrazyPuttingGame extends Game{
 
     public void showLevelScreen(){
         setScreen(new LevelScreen(this));
+    }
+
+    public void showPauseScreen(){
+        setScreen(new PauseScreen(this));
+    }
+
+    public void resumeGameScreen(){
+        setScreen(this.game);
     }
 
     public void exitTheGame(){
