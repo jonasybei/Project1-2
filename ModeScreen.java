@@ -76,6 +76,12 @@ public class ModeScreen extends InputAdapter implements Screen{
         this.singlePlayerButton.pad(20);
 
         this.autoPlayerButton = new TextButton("AUTO" , textButtonStyle);
+        this.autoPlayerButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x,float y){
+                game.showLevelScreenAuto();
+            }
+        });
         this.autoPlayerButton.pad(20);
 
 

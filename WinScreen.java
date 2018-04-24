@@ -19,22 +19,25 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
 
-public class PauseScreen extends InputAdapter implements Screen{
+public class WinScreen extends InputAdapter implements Screen{
     private CrazyPuttingGame game;
     private FitViewport viewport;
     private Stage stage;
     private TextureAtlas atlas;
     private Skin skin;
     private Table table;
-    private TextButton playButton;
-    private TextButton scoreButton;
+    private TextButton menuButton;
+    private TextButton levelButton;
     private TextButton exitButton;
     private BitmapFont font;
     private BitmapFont headingFont;
     private Label heading;
+    private Label scoreText;
+    private int score;
 
 
-    public PauseScreen(CrazyPuttingGame game){
+    public WinScreen(CrazyPuttingGame game , int score){
+        this.score = score;
         this.game = game;
     }
 
@@ -64,41 +67,55 @@ public class PauseScreen extends InputAdapter implements Screen{
         textButtonStyle.font = this.font;
         textButtonStyle.fontColor = Color.BLACK;
 
-        this.playButton = new TextButton("LEVELS" , textButtonStyle);
-        this.playButton.pad(20);
-        this.playButton.addListener(new ClickListener(){
+        this.menuButton = new TextButton("MENU" , textButtonStyle);
+        this.menuButton.pad(20);
+        this.menuButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event ,float x,float y) {
-                game.showLevelScreen();
+                game.showMenuScreen();
 
             }
         });
 
+        this.levelButton = new TextButton("LEVELS" , textButtonStyle);
+        this.levelButton.pad(20);
+        this.levelButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event ,float x,float y) {
+                game.showLevelScreen();
+            }
+        });
 
-        this.exitButton = new TextButton("EXIT THE GAME" , textButtonStyle);
+        this.exitButton = new TextButton("EXIT" , textButtonStyle);
         this.exitButton.pad(20);
         this.exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event ,float x,float y) {
-                game.showMenuScreen();
+                game.exitTheGame();
             }
         });
 
 
         LabelStyle headingStyle = new Label.LabelStyle(this.headingFont, Color.BLACK);
-        this.heading = new Label("PAUSE" , headingStyle);
+        this.heading = new Label("WELLDONE " , headingStyle);
         this.heading.setFontScale(4);
+        String text = "YOU SCORED " + this.score;
+        this.scoreText = new Label(text, headingStyle);
+        this.scoreText.setFontScale(4);
 
 
 
         this.table.add(heading);
-        this.table.getCell(this.heading).spaceBottom(100);
+        this.table.getCell(this.heading).spaceBottom(20);
         this.table.row();
-        this.table.add(this.playButton);
-        this.table.getCell(this.playButton).spaceBottom(50);
+        this.table.add(scoreText);
+        this.table.getCell(this.scoreText).spaceBottom(70);
         this.table.row();
-        this.table.add(this.scoreButton);
-        this.table.getCell(this.scoreButton).spaceBottom(50);
+        this.table.add(this.menuButton);
+        this.table.getCell(this.menuButton).spaceBottom(50);
+        this.table.row();
+        this.table.add(this.levelButton);
+        this.table.getCell(this.levelButton).spaceBottom(50);
         this.table.row();
         this.table.add(this.exitButton);
         this.table.debug();
@@ -126,5 +143,4 @@ public class PauseScreen extends InputAdapter implements Screen{
     @Override
     public void resize(int width, int height) {}
 }
-
 

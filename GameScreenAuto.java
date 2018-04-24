@@ -4,6 +4,7 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
@@ -14,25 +15,26 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.mygdx.game.*;
 import com.mygdx.managers.CrazyPuttingGame;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 import java.util.ArrayList;
+//import com.mygdx.managers.CrazyPuttingGame;
 
-public class GameScreen extends InputAdapter implements Screen {
+public class GameScreenAuto extends InputAdapter implements Screen {
 
     CrazyPuttingGame game;
     ShapeRenderer renderer;
     ExtendViewport viewport;
     SpriteBatch batch;
-
-    private Stage stage;
-    private Table table;
-    private BitmapFont headingFont;
-    private Label heading;
 
     private PerspectiveCamera cam;
     private Model model;
@@ -42,7 +44,7 @@ public class GameScreen extends InputAdapter implements Screen {
     private ModelInstance start;
     private ModelInstance end;
     private ModelInstance water;
-    private ModelInstance arrow3D;
+    private ModelInstance origin;
 
     private ModelBatch modelBatch;
     private Environment environment;
@@ -55,6 +57,10 @@ public class GameScreen extends InputAdapter implements Screen {
     private Texture powerBar;
     private float  power = 1;
 
+    private TextureRegion textureRegion;
+    private Texture arrow;
+    private float arrowWidth = 200f;
+    private float arrowHeigth = 100f;
     private float angle = 360;
 
     private int level;
@@ -67,12 +73,11 @@ public class GameScreen extends InputAdapter implements Screen {
 
     private Map m;
 
-    private int score;
-
-    public GameScreen(CrazyPuttingGame game, int level){
-        this.score = 0;
+    public GameScreenAuto(CrazyPuttingGame game, int level){
         this.game = game;
         this.powerBar = new Texture("core/assets/pwerBar.9.png");
+        this.arrow = new Texture("core/assets/arrow.png");
+        this.textureRegion = new TextureRegion(this.arrow);
         this.rollingBall = new Ball();
         this.level = level;
         createLevel(level);
@@ -86,9 +91,9 @@ public class GameScreen extends InputAdapter implements Screen {
             if(rollingBall.isStationary() && state == 1) {
                 System.out.println("stopped");
                 Vector3 tmpPos = rollingBall.getPosition();
-                if(m.getEndPos().dst(tmpPos.x, tmpPos.y) < 1) {
+                if(m.getEndPos().dst(tmpPos.x, tmpPos.y) < ep*4) {
                     state = 2;
-                    game.showWinScreen(this.score);
+                    System.out.print("You Win");
                 }
                 rollingBall.resetVelocity();
                 state = 0;
@@ -106,7 +111,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
 
                 pos=rollingBall.getNewPosition();
-                ball.transform.setTranslation(pos.x,  (float)Terrain.compute(level, pos.x, pos.y)/2 + 0.5f, pos.y);
+                ball.transform.setTranslation(pos.x,  (float) Terrain.compute(level, pos.x, pos.y)/2 + 0.5f, pos.y);
 
                 Vector3 tmpPos = rollingBall.getPosition();
                 float mu = 0.3f;
@@ -120,14 +125,6 @@ public class GameScreen extends InputAdapter implements Screen {
             }
 
 
-            Vector3 axe = new Vector3();
-            axe.x = 0;
-            axe.y = 1;
-            axe.z = 0;
-            this.arrow3D.transform.setToRotationRad(axe,convertDegreeToRadians());
-
-
-
 
             Gdx.gl.glClearColor(0f, 0.5f, 0.5f, 1f);
             Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -139,11 +136,11 @@ public class GameScreen extends InputAdapter implements Screen {
 
             modelBatch.begin(cam);
             modelBatch.render(water,environment);
-            modelBatch.render(arrow3D,environment);
             modelBatch.render(instance, environment);
             modelBatch.render(ball, environment);
             modelBatch.render(start,environment);
             modelBatch.render(end,environment);
+            modelBatch.render(origin,environment);
             modelBatch.end();
 
 
@@ -160,23 +157,31 @@ public class GameScreen extends InputAdapter implements Screen {
         if(Gdx.input.isKeyPressed(Input.Keys.UP)){
             if(this.power <= 0.99f) {
                 this.power = this.power + 0.01f;
-
+                System.out.println("power = "+power);
             }
         }else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
             if(this.power >= 0.01f) {
                 this.power = this.power - 0.01f;
-
+                System.out.println("power = "+power);
             }
         }
 
 
+
+
+        this.batch.draw(this.textureRegion,200,100,this.arrowWidth/2,this.arrowHeigth/2,200,100,1f,1f,this.angle);
+
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
             if(this.angle >= 1) {
                 this.angle = this.angle - 5;
+                System.out.println("angle = " + angle);
+                updateArrow();
             }
         }else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
             if(this.angle < 360) {
                 this.angle = this.angle + 5;
+                System.out.println("angle = " + angle);
+                updateArrow();
             }
         }
 
@@ -191,28 +196,12 @@ public class GameScreen extends InputAdapter implements Screen {
             float proveAngle = getRightAngle(this.angle);
             rollingBall.setVelocity(prove,fromDegreeToRadians(proveAngle));
             this.state = 1;
-            this.score++;
         }
-
-        this.stage = new Stage();
-        this.table = new Table();
-        this.headingFont = new BitmapFont();
-        table.setBounds(100,Gdx.graphics.getHeight()-100,100,100);
-
-        String yourScore = "SCORE: " + this.score;
-
-        Label.LabelStyle headingStyle = new Label.LabelStyle(this.headingFont, Color.BLACK);
-        this.heading = new Label(yourScore , headingStyle);
-        this.heading.setFontScale(4);
-
-        this.table.add(this.heading);
-        this.table.debug();
-        this.stage.addActor(this.table);
-
-        this.stage.act(delta);
-        this.stage.draw();
     }
 
+    private void updateArrow() {
+        origin.transform.setToRotationRad(new Vector3(0,1,0), angle);
+    }
 
     @Override
     public void dispose () {
@@ -226,6 +215,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
         viewport = new ExtendViewport(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGTH);
         Gdx.input.setInputProcessor(this);
+
     }
 
     @Override
@@ -389,17 +379,18 @@ public class GameScreen extends InputAdapter implements Screen {
 
         ball = new ModelInstance(modelBuilder.createSphere(1f, 1f, 1f, 20, 20, new Material(ColorAttribute.createDiffuse(Color.WHITE)), attr));
 
-
-        arrow3D = new ModelInstance(modelBuilder.createArrow(0,(float)Terrain.compute(this.level,0f,0f),0, 2,(float)Terrain.compute(this.level,0f,0f),0, 0.1f, 0.1f, 5, GL20.GL_TRIANGLES, new Material(ColorAttribute.createDiffuse(Color.RED)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal));
+        origin = new ModelInstance(modelBuilder.createBox(2f, 0.1f, 0.1f,new Material(ColorAttribute.createDiffuse(Color.WHITE)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal));
 
 
         Vector2 s = m.getStartPos();
         Vector2 e = m.getEndPos();
 
+        origin.transform.setTranslation(s.x - 2,  (float)Terrain.compute(t, s.x, s.y)/k + 1, s.y);
+
         start.transform.setTranslation(s.x,  (float)Terrain.compute(t, s.x, s.y)/k, s.y);
         end.transform.setTranslation(e.x,  (float)Terrain.compute(t, e.x, s.y)/k, e.y);
         ball.transform.setTranslation(s.x,  (float)Terrain.compute(t, s.x, s.y)/k + 0.5f, s.y);
-        water.transform.setTranslation(0,-5.1f,0);
+        water.transform.setTranslation(0,-5f,0);
 
         //allow the level to be rendered
         ready = true;
@@ -410,29 +401,16 @@ public class GameScreen extends InputAdapter implements Screen {
         return radians;
     }
 
-    public float convertDegreeToRadians(){
-        float radians = (float)(this.angle *(Math.PI / 180));
-        return radians;
-    }
-
-
-
     //method to make some tests
     public float getRightAngle(float angle){
         float prove = angle;
         if(prove <= 180){
-            prove =(270 - (angle - 270))+180;
+            prove = 270 - (angle - 270);
         }else{
-            prove = (90 - (angle - 90))-180;
+            prove = 90 - (angle - 90);
         }
         return  prove;
     }
-
-    public float getArrowHeight(){
-        
-    }
-
-
 
     public Map getMap(){
         return this.m;

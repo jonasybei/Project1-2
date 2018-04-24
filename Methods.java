@@ -10,4 +10,6 @@ public class Methods {
         ArrayList<Point> pointsArray = new ArrayList<Point>();
 
     }*/
+
+    // velocity.x = velocity.x - h * g * Math.sin(Math.atan((array[0].z-array[2].z)/2));
 }

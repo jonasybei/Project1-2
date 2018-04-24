@@ -20,9 +20,16 @@ public class Ball {
     private double acceleration; // in m/s2
     private boolean target;
     private int stopN = 0;
+    private Map m;
+    private float slopX;
+    private float slopY;
+    private float frictX;
+    private float frictY;
+
 
 
     public void setInitialPosition (Vector2 position, Map m) {
+        this.m = m;
         pos.x=position.x;
         pos.y=position.y;
         pos.z= (float) Terrain.compute(m.getTerrain(),pos.x,pos.y);
@@ -46,8 +53,10 @@ public class Ball {
     public void setVelocity (float input, float alfa) {
         totalVelocity=(input);
 
-        velocity.x=(float)(Math.abs(totalVelocity*Math.cos(alfa)));
-        velocity.y=(float)(Math.abs(totalVelocity*Math.sin(alfa)));
+        //velocity.x=(float)(Math.abs(totalVelocity*Math.cos(alfa)));
+        //velocity.y=(float)(Math.abs(totalVelocity*Math.sin(alfa)));
+        velocity.x=(float)(totalVelocity*Math.cos(alfa));
+        velocity.y=(float)(totalVelocity*Math.sin(alfa));
         velocity.z=0;
     }
 
@@ -61,12 +70,12 @@ public class Ball {
     }
 
     public boolean isStationary() {
-        if(totalVelocity == 0)
+        if(totalVelocity <= 0.5)
             stopN++;
         else
             stopN = 0;
 
-        return stopN > 80;
+        return stopN > 10;
     }
 
     public Vector3 getNewPosition () {
@@ -74,26 +83,108 @@ public class Ball {
     }
 
     public void setNewVelocity(double mu) {
-        if(velocity.x > 0) {
-            velocity.x = (float) (velocity.x - (mu * g * h)* (((pos.z - lastPos.z)/(pos.x - lastPos.x))+1));
-        }else {
-            velocity.x = 0;
+
+        Vector3[] array = pointsAroundTheBall();
+        this.frictX = (float) (mu * g * h);
+        this.frictY = (float) (mu * g * h);
+        this.slopX =(float)(( h * g * Math.sin(Math.atan((array[0].z-array[2].z)/2)))*2);
+        this.slopY =(float) -(( h * g * Math.sin(Math.atan((array[1].z-array[3].z)/2)))*2);
+
+        if(velocity.x > 0 && velocity.x - frictX > 0 ) {
+
+            velocity.x = (float) (velocity.x - frictX);
+            velocity.x = velocity.x - slopX;
+
+        }else if(velocity.x > 0 && velocity.x - frictX < 0) {
+            if(Math.abs(slopX) > frictX){
+                velocity.x = velocity.x - slopX;
+            }else {
+                velocity.x = 0;
+            }
+
+        }else if(velocity.x < 0 && velocity.x + frictX < 0){
+
+            velocity.x = (float) (velocity.x + frictX);
+            velocity.x = velocity.x + slopX;
+
+        }else if(velocity.x < 0 && velocity.x + frictX > 0){
+            if(Math.abs(slopX) > frictX){
+                velocity.x = velocity.x + slopX;
+            }else {
+                velocity.x = 0;
+            }
         }
-        if(velocity.y > 0) {
-            velocity.y = (float) (velocity.y - (mu * g * h)* (((pos.z - lastPos.z)/(pos.y - lastPos.y))+1));
-        }else{
-            velocity.y = 0;
+
+
+        if(velocity.y > 0 && velocity.y - frictY >0 ) {
+
+            velocity.y = (float) (velocity.y - frictY);
+            velocity.y = velocity.y - slopY;
+
+        }else if(velocity.y > 0 && velocity.y - frictY <= 0 ){
+            if(Math.abs(slopY) > frictY){
+                velocity.y = velocity.y - slopY;
+            }else {
+                velocity.y = 0;
+            }
+
+        }else if(velocity.y < 0 && velocity.y + frictY < 0){
+
+            velocity.y = (float) (velocity.y + frictY);
+            velocity.y = velocity.y + slopY;
+
+        }else if(velocity.y < 0 && velocity.y + frictY > 0){
+            if(Math.abs(slopY) > frictY){
+                velocity.y = velocity.y + slopY;
+            }else {
+                velocity.y = 0;
+            }
+
         }
-        if(velocity.x > 0 || velocity.y > 0) {
+
+
+        //if(velocity.x > 0 || velocity.y > 0) {
             //velocity.z = (float) (velocity.z - g * h * (pos.z - lastPos.z));
-            velocity.z = (float) (velocity.z - g * h * (pos.z - lastPos.z));
-        }else{
+           // velocity.z = (float) (velocity.z - g * h * (pos.z - lastPos.z));
+       //}else{
             velocity.z = 0;
-        }
+        //}
         totalVelocity=Math.sqrt(Math.pow(velocity.x,2)+Math.pow(velocity.y,2)+Math.pow(velocity.z,2));
+
+        System.out.println("velocity.x = "+velocity.x);
+        System.out.println("velocity.y = "+velocity.y);
+        System.out.println("velocity.z = "+velocity.z);
+        System.out.println("totalvelocity = "+totalVelocity);
     }
 
+    public Vector3[] pointsAroundTheBall() {
+        //0 = x+1,y  1 = x,y-1  2 = x-1,y  3 = x,y+1
+        Vector3[] array = new Vector3[4];
 
+        array[0] = new Vector3();
+        array[1] = new Vector3();
+        array[2] = new Vector3();
+        array[3] = new Vector3();
+
+        array[0].x = this.pos.x +1;
+        array[0].y = this.pos.y;
+        array[0].z =(float)(Terrain.compute(this.m.getTerrain(),array[0].x,array[0].y));
+
+        array[1].x = this.pos.x;
+        array[1].y = this.pos.y-1;
+        array[1].z =(float)(Terrain.compute(this.m.getTerrain(),array[1].x,array[1].y));
+
+        array[2].x = this.pos.x -1;
+        array[2].y = this.pos.y;
+        array[2].z =(float)(Terrain.compute(this.m.getTerrain(),array[2].x,array[2].y));
+
+        array[3].x = this.pos.x;
+        array[3].y = this.pos.y+1;
+        array[3].z =(float)(Terrain.compute(this.m.getTerrain(),array[3].x,array[3].y));
+
+        return array;
+
+    }
 
     public double getSize() {
         return size;

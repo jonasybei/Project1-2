@@ -35,8 +35,20 @@ public class CrazyPuttingGame extends Game{
         setScreen(new LevelScreen(this));
     }
 
+    public void showWinScreen(int score){
+        setScreen(new WinScreen(this, score));
+    }
+
+    public void showLevelScreenAuto(){
+        setScreen(new LevelScreenAuto(this));
+    }
+
     public void showPauseScreen(){
         setScreen(new PauseScreen(this));
+    }
+
+    public void showGameScreenAuto(int level){
+        setScreen(new GameScreenAuto(this,level));
     }
 
     public void resumeGameScreen(){

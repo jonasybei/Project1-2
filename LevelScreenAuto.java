@@ -23,7 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.graphics.Color;
 
 
-public class LevelScreen extends InputAdapter implements Screen{
+public class LevelScreenAuto extends InputAdapter implements Screen{
     private CrazyPuttingGame game;
     private FitViewport viewport;
     private Stage stage;
@@ -41,7 +41,7 @@ public class LevelScreen extends InputAdapter implements Screen{
     private Label heading;
 
 
-    public LevelScreen(CrazyPuttingGame game){
+    public LevelScreenAuto(CrazyPuttingGame game){
         this.game = game;
     }
 
@@ -74,7 +74,7 @@ public class LevelScreen extends InputAdapter implements Screen{
         this.level1Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x,float y){
-                game.showGameScreen(1);
+                game.showGameScreenAuto(1);
             }
         });
         this.level1Button.pad(20);
@@ -83,7 +83,7 @@ public class LevelScreen extends InputAdapter implements Screen{
         this.level2Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x,float y){
-                game.showGameScreen(2);
+                game.showGameScreenAuto(2);
             }
         });
         this.level2Button.pad(20);
@@ -92,7 +92,7 @@ public class LevelScreen extends InputAdapter implements Screen{
         this.level3Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x,float y){
-                game.showGameScreen(3);
+                game.showGameScreenAuto(3);
             }
         });
         this.level3Button.pad(20);
@@ -101,7 +101,7 @@ public class LevelScreen extends InputAdapter implements Screen{
         this.level4Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x,float y){
-                game.showGameScreen(4);
+                game.showGameScreenAuto(4);
             }
         });
         this.level4Button.pad(20);
@@ -110,7 +110,7 @@ public class LevelScreen extends InputAdapter implements Screen{
         this.level5Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x,float y){
-                game.showGameScreen(5);
+                game.showGameScreenAuto(5);
             }
         });
         this.level5Button.pad(20);
@@ -119,7 +119,7 @@ public class LevelScreen extends InputAdapter implements Screen{
         this.level6Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x,float y){
-                game.showGameScreen(6);
+                game.showGameScreenAuto(6);
             }
         });
         this.level6Button.pad(20);
@@ -136,7 +136,7 @@ public class LevelScreen extends InputAdapter implements Screen{
 
 
         LabelStyle headingStyle = new Label.LabelStyle(this.font, Color.BLACK);
-        this.heading = new Label("LEVEL SCREEN" , headingStyle);
+        this.heading = new Label("MODE SETTINGS" , headingStyle);
         this.heading.setFontScale(4);
 
 
