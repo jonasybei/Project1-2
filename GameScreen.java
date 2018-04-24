@@ -390,7 +390,7 @@ public class GameScreen extends InputAdapter implements Screen {
         ball = new ModelInstance(modelBuilder.createSphere(1f, 1f, 1f, 20, 20, new Material(ColorAttribute.createDiffuse(Color.WHITE)), attr));
 
 
-        arrow3D = new ModelInstance(modelBuilder.createArrow(0,(float)Terrain.compute(this.level,0f,0f),0, 2,(float)Terrain.compute(this.level,0f,0f),0, 0.1f, 0.1f, 5, GL20.GL_TRIANGLES, new Material(ColorAttribute.createDiffuse(Color.RED)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal));
+        arrow3D = new ModelInstance(modelBuilder.createArrow(0,getArrowHeight(),0, 2,getArrowHeight(),0, 0.1f, 0.1f, 5, GL20.GL_TRIANGLES, new Material(ColorAttribute.createDiffuse(Color.RED)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal));
 
 
         Vector2 s = m.getStartPos();
@@ -429,7 +429,12 @@ public class GameScreen extends InputAdapter implements Screen {
     }
 
     public float getArrowHeight(){
-        
+        double height = Terrain.compute(this.level,0f,0f);
+        if(height < 0){
+            height = 0;
+        }
+
+        return (float) height;
     }
 
 
