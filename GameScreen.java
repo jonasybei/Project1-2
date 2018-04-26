@@ -32,7 +32,8 @@ public class GameScreen extends InputAdapter implements Screen {
     private Stage stage;
     private Table table;
     private BitmapFont headingFont;
-    private Label heading;
+    private Label scoreHeading;
+    private Label powerHeading;
 
     private PerspectiveCamera cam;
     private Model model;
@@ -106,7 +107,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
 
                 pos=rollingBall.getNewPosition();
-                ball.transform.setTranslation(pos.x,  (float)Terrain.compute(level, pos.x, pos.y)/2 + 0.5f, pos.y);
+                ball.transform.setTranslation(pos.x,(float)Terrain.compute(level, pos.x, pos.y)/2 + 0.5f, pos.y);
 
                 Vector3 tmpPos = rollingBall.getPosition();
                 float mu = 0.3f;
@@ -125,6 +126,8 @@ public class GameScreen extends InputAdapter implements Screen {
             axe.y = 1;
             axe.z = 0;
             this.arrow3D.transform.setToRotationRad(axe,convertDegreeToRadians());
+
+
 
 
 
@@ -196,17 +199,26 @@ public class GameScreen extends InputAdapter implements Screen {
 
         this.stage = new Stage();
         this.table = new Table();
-        this.headingFont = new BitmapFont();
-        table.setBounds(100,Gdx.graphics.getHeight()-100,100,100);
+        this.headingFont = new BitmapFont(Gdx.files.internal("core/assets/fonts/font.fnt"));
+        table.setBounds(150,Gdx.graphics.getHeight()-150,100,100);
 
         String yourScore = "SCORE: " + this.score;
 
         Label.LabelStyle headingStyle = new Label.LabelStyle(this.headingFont, Color.BLACK);
-        this.heading = new Label(yourScore , headingStyle);
-        this.heading.setFontScale(4);
+        this.scoreHeading = new Label(yourScore , headingStyle);
+        this.scoreHeading.setFontScale(2);
 
-        this.table.add(this.heading);
-        this.table.debug();
+        String yourPower = "POWER: " + Math.round(this.power*100) + " %";
+
+        this.powerHeading = new Label(yourPower , headingStyle);
+        this.powerHeading.setFontScale(2);
+
+
+
+
+        this.table.add(this.scoreHeading);
+        this.table.row();
+        this.table.add(this.powerHeading);
         this.stage.addActor(this.table);
 
         this.stage.act(delta);
@@ -322,7 +334,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
         for (float x = -10; x < 10; x += ep ) {
             faces.add( new Face(
-                    new Vector3(x,    (float)Terrain.compute(t,x,   10)/k, 10),
+                    new Vector3(x,    (float)Terrain.compute(t,x,10)/k, 10),
                     new Vector3(x, -10, 10),
                     new Vector3(x+ep,    (float)Terrain.compute(t,x+ep,10)/k, 10),
                     Color.GRAY));
@@ -336,7 +348,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
         for (float y = -10; y < 10; y += ep ) {
             faces.add( new Face(
-                    new Vector3(-10,    (float)Terrain.compute(t,-10,   y)/k, y),
+                    new Vector3(-10,    (float)Terrain.compute(t,-10, y)/k, y),
                     new Vector3(-10, -10, y),
                     new Vector3(-10,    (float)Terrain.compute(t,-10,y+ep)/k, y+ep),
                     Color.GRAY));

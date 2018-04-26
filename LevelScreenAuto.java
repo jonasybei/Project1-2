@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -38,7 +39,9 @@ public class LevelScreenAuto extends InputAdapter implements Screen{
     private TextButton level6Button;
     private TextButton backButton;
     private BitmapFont font;
+    private BitmapFont headingFont;
     private Label heading;
+    private Texture background;
 
 
     public LevelScreenAuto(CrazyPuttingGame game){
@@ -49,7 +52,11 @@ public class LevelScreenAuto extends InputAdapter implements Screen{
     public void render (float delta) {
         Gdx.gl.glClearColor(0,1,0,0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        background = new Texture("core/assets/golf.9.png");
         this.stage.act(delta);
+        stage.getBatch().begin();
+        stage.getBatch().draw(background, 0, 0, 1500, 900);
+        stage.getBatch().end();
         this.stage.draw();
     }
 
@@ -60,6 +67,7 @@ public class LevelScreenAuto extends InputAdapter implements Screen{
         this.skin = new Skin(atlas);
         this.table = new Table(skin);
         this.font = new BitmapFont();
+        this.headingFont = new BitmapFont(Gdx.files.internal("core/assets/fonts/font.fnt"));
         table.setBounds(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
         TextButtonStyle textButtonStyle = new TextButtonStyle();
@@ -135,9 +143,9 @@ public class LevelScreenAuto extends InputAdapter implements Screen{
         });
 
 
-        LabelStyle headingStyle = new Label.LabelStyle(this.font, Color.BLACK);
-        this.heading = new Label("MODE SETTINGS" , headingStyle);
-        this.heading.setFontScale(4);
+        LabelStyle headingStyle = new Label.LabelStyle(this.headingFont, Color.BLACK);
+        this.heading = new Label("LEVELS" , headingStyle);
+        this.heading.setFontScale(2);
 
 
         this.table.add(heading);
@@ -162,7 +170,6 @@ public class LevelScreenAuto extends InputAdapter implements Screen{
         this.table.getCell(this.level6Button).spaceBottom(50);
         this.table.row();
         this.table.add(this.backButton);
-        this.table.debug();
         this.stage.addActor(this.table);
         Gdx.input.setInputProcessor(stage);
     }

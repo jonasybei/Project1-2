@@ -1,7 +1,9 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -17,27 +19,29 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.managers.CrazyPuttingGame;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.graphics.Color;
 
 
-public class WinScreen extends InputAdapter implements Screen{
+
+public class InsertNameScreen extends InputAdapter implements Screen{
     private CrazyPuttingGame game;
     private FitViewport viewport;
     private Stage stage;
     private TextureAtlas atlas;
     private Skin skin;
+    private Skin skin2;
     private Table table;
-    private TextButton menuButton;
-    private TextButton levelButton;
-    private TextButton exitButton;
+    private TextButton doneButton;
+    private TextButton backButton;
     private BitmapFont font;
     private BitmapFont headingFont;
     private Label heading;
-    private Label scoreText;
-    private int score;
     private Texture background;
+    private TextField area;
 
-    public WinScreen(CrazyPuttingGame game , int score){
-        this.score = score;
+
+    public InsertNameScreen(CrazyPuttingGame game){
         this.game = game;
     }
 
@@ -45,7 +49,7 @@ public class WinScreen extends InputAdapter implements Screen{
     public void render (float delta) {
         Gdx.gl.glClearColor(0,1,0,0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        background = new Texture("core/assets/golf.9.png");
+        this.background = new Texture("core/assets/golf.9.png");
 
         this.stage.act(delta);
         stage.getBatch().begin();
@@ -59,9 +63,12 @@ public class WinScreen extends InputAdapter implements Screen{
         this.stage = new Stage();
         this.atlas = new TextureAtlas("C:\\Users\\matte.LAPTOP-FLG8V3QC\\Documents\\UM\\PROJECTS\\Project.Putting\\core\\assets\\button.pack");
         this.skin = new Skin(atlas);
+        this.skin2 = new Skin();
         this.table = new Table(skin);
         this.font = new BitmapFont();
         this.headingFont = new BitmapFont(Gdx.files.internal("core/assets/fonts/font.fnt"));
+        //this.area = new TextField("hello",this.skin);
+
         table.setBounds(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
         TextButtonStyle textButtonStyle = new TextButtonStyle();
@@ -72,57 +79,43 @@ public class WinScreen extends InputAdapter implements Screen{
         textButtonStyle.font = this.font;
         textButtonStyle.fontColor = Color.BLACK;
 
-        this.menuButton = new TextButton("MENU" , textButtonStyle);
-        this.menuButton.pad(20);
-        this.menuButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event ,float x,float y) {
-                game.showMenuScreen();
-
-            }
-        });
-
-        this.levelButton = new TextButton("LEVELS" , textButtonStyle);
-        this.levelButton.pad(20);
-        this.levelButton.addListener(new ClickListener(){
+        this.doneButton = new TextButton("DONE" , textButtonStyle);
+        this.doneButton.pad(20);
+        this.doneButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event ,float x,float y) {
                 game.showLevelScreen();
+
             }
         });
 
-        this.exitButton = new TextButton("EXIT" , textButtonStyle);
-        this.exitButton.pad(20);
-        this.exitButton.addListener(new ClickListener(){
+
+        this.backButton = new TextButton("BACK" , textButtonStyle);
+        this.backButton.pad(20);
+        this.backButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event ,float x,float y) {
-                game.exitTheGame();
+                game.showModeScreen();
             }
         });
+
+
 
 
         LabelStyle headingStyle = new Label.LabelStyle(this.headingFont, Color.BLACK);
-        this.heading = new Label("WELL DONE " , headingStyle);
+        this.heading = new Label("PLEASE TYPE YOUR NAME" , headingStyle);
         this.heading.setFontScale(2);
-        String text = "YOU SCORED " + this.score;
-        this.scoreText = new Label(text, headingStyle);
-        this.scoreText.setFontScale(2);
-
 
 
         this.table.add(heading);
-        this.table.getCell(this.heading).spaceBottom(20);
+        this.table.getCell(this.heading).spaceBottom(50);
         this.table.row();
-        this.table.add(scoreText);
-        this.table.getCell(this.scoreText).spaceBottom(70);
+        //this.table.add(area);
+        //this.table.row();
+        this.table.add(this.doneButton);
+        this.table.getCell(this.doneButton).spaceBottom(25);
         this.table.row();
-        this.table.add(this.menuButton);
-        this.table.getCell(this.menuButton).spaceBottom(50);
-        this.table.row();
-        this.table.add(this.levelButton);
-        this.table.getCell(this.levelButton).spaceBottom(50);
-        this.table.row();
-        this.table.add(this.exitButton);
+        this.table.add(this.backButton);
         this.stage.addActor(this.table);
         Gdx.input.setInputProcessor(stage);
     }
@@ -130,7 +123,9 @@ public class WinScreen extends InputAdapter implements Screen{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return true; }
+        return true;
+    }
+
 
     @Override
     public void pause() {}

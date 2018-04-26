@@ -31,8 +31,16 @@ public class CrazyPuttingGame extends Game{
         setScreen(new ScoreScreen(this));
     }
 
+    public void showUser1Screen() {
+        setScreen(new User1Screen(this));
+    }
+
     public void showLevelScreen(){
         setScreen(new LevelScreen(this));
+    }
+
+    public void showNameScreen(){
+        setScreen(new InsertNameScreen(this));
     }
 
     public void showWinScreen(int score){
