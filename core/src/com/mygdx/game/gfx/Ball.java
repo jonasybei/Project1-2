@@ -1,7 +1,8 @@
-package com.mygdx.game;
+package com.mygdx.game.gfx;
 
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.Vector2;
+
 import java.lang.Math;
 
 public class Ball {

@@ -1,7 +1,4 @@
-package com.mygdx.game;
-
-import java.awt.*;
-import java.util.ArrayList;
+package com.mygdx.game.bot.divQ;
 
 public class Methods {
 

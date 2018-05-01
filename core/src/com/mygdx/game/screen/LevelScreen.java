@@ -1,36 +1,17 @@
 package com.mygdx.game.screen;
 
-import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.mygdx.managers.CrazyPuttingGame;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mygdx.managers.CrazyPuttingGame;
 
 
-public class LevelScreen extends InputAdapter implements Screen{
-    private CrazyPuttingGame game;
-    private FitViewport viewport;
-    private Stage stage;
-    private TextureAtlas atlas;
-    private Skin skin;
-    private Table table;
+public class LevelScreen extends GolfScreen {
+
     private TextButton level1Button;
     private TextButton level2Button;
     private TextButton level3Button;
@@ -38,46 +19,17 @@ public class LevelScreen extends InputAdapter implements Screen{
     private TextButton level5Button;
     private TextButton level6Button;
     private TextButton backButton;
-    private BitmapFont font;
-    private BitmapFont headingFont;
-    private Label heading;
-    private Texture background;
 
 
     public LevelScreen(CrazyPuttingGame game){
-        this.game = game;
+        super(game);
     }
 
-    @Override
-    public void render (float delta) {
-        Gdx.gl.glClearColor(0,1,0,0);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        background = new Texture("core/assets/golf.9.png");
-
-        this.stage.act(delta);
-        stage.getBatch().begin();
-        stage.getBatch().draw(background, 0, 0, 1500, 900);
-        stage.getBatch().end();
-        this.stage.draw();
-    }
 
     @Override
     public void show(){
-        this.stage = new Stage();
-        this.atlas = new TextureAtlas("core/assets/button.pack");
-        this.skin = new Skin(atlas);
-        this.table = new Table(skin);
-        this.headingFont = new BitmapFont(Gdx.files.internal("core/assets/fonts/font.fnt"));
-        this.font = new BitmapFont();
-        table.setBounds(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        super.show();
 
-        TextButtonStyle textButtonStyle = new TextButtonStyle();
-        textButtonStyle.up = skin.getDrawable("button_up");
-        textButtonStyle.down = skin.getDrawable("button_down");
-        textButtonStyle.pressedOffsetX = 1;
-        textButtonStyle.pressedOffsetY = -1;
-        textButtonStyle.font = this.font;
-        textButtonStyle.fontColor = Color.BLACK;
 
         this.level1Button = new TextButton("LEVEL 1" , textButtonStyle);
         this.level1Button.addListener(new ClickListener(){
@@ -174,21 +126,6 @@ public class LevelScreen extends InputAdapter implements Screen{
         this.stage.addActor(this.table);
         Gdx.input.setInputProcessor(stage);
     }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return true;
-    }
-    @Override
-    public void pause() {}
-    @Override
-    public void resume() {}
-    @Override
-    public void hide() {}
-    @Override
-    public void dispose () {}
-    @Override
-    public void resize(int width, int height) {}
 }
 
 

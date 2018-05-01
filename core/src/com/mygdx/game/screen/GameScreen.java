@@ -4,7 +4,6 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
@@ -18,7 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.mygdx.game.*;
+import com.mygdx.game.gfx.*;
 import com.mygdx.managers.CrazyPuttingGame;
 
 import java.util.ArrayList;
@@ -233,7 +232,7 @@ public class GameScreen extends InputAdapter implements Screen {
         renderer = new ShapeRenderer();
         batch = new SpriteBatch();
 
-        viewport = new ExtendViewport(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGTH);
+        viewport = new ExtendViewport(game.width, game.height);
         Gdx.input.setInputProcessor(this);
     }
 

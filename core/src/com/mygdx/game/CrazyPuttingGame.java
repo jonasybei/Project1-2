@@ -3,12 +3,14 @@ package com.mygdx.managers;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.mygdx.game.*;
 import com.mygdx.game.screen.*;
 
-public class CrazyPuttingGame extends Game{
+public class CrazyPuttingGame extends Game {
 
     private GameScreen game;
+
+    public int height = 900;
+    public int width = 1500;
 
     @Override
     public void create() {

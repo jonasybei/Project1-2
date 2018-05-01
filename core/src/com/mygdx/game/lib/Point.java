@@ -1,3 +1,5 @@
+package com.mygdx.game.lib;
+
 public class Point {
   private double x;
   private double y;

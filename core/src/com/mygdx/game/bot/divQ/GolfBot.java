@@ -1,6 +1,8 @@
-package com.mygdx.game;
+package com.mygdx.game.bot.divQ;
 
-import java.awt.*;
+import com.mygdx.game.lib.Point;
+import com.mygdx.game.gfx.Terrain;
+
 import java.util.ArrayList;
 
 

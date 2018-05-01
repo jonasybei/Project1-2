@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.gfx;
 
 public class Tree {
     private double[] position = new double[2]; //x and y values

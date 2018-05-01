@@ -10,38 +10,29 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.managers.CrazyPuttingGame;
 
 
-public class ModeScreen extends GolfScreen {
-    private TextButton singlePlayerButton;
-    private TextButton autoPlayerButton;
+
+public class InsertNameScreen extends GolfScreen {
+    private TextButton doneButton;
     private TextButton backButton;
 
 
-    public ModeScreen(CrazyPuttingGame game){
+    public InsertNameScreen(CrazyPuttingGame game){
         super(game);
     }
-
 
     @Override
     public void show(){
         super.show();
 
-        this.singlePlayerButton = new TextButton("SINGLE PLAYER" , textButtonStyle);
-        this.singlePlayerButton.addListener(new ClickListener(){
+        this.doneButton = new TextButton("DONE" , textButtonStyle);
+        this.doneButton.pad(20);
+        this.doneButton.addListener(new ClickListener(){
             @Override
-            public void clicked(InputEvent event, float x,float y){
-               game.showNameScreen();
-            }
-        });
-        this.singlePlayerButton.pad(20);
+            public void clicked(InputEvent event ,float x,float y) {
+                game.showLevelScreen();
 
-        this.autoPlayerButton = new TextButton("AUTO" , textButtonStyle);
-        this.autoPlayerButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x,float y){
-                game.showLevelScreenAuto();
             }
         });
-        this.autoPlayerButton.pad(20);
 
 
         this.backButton = new TextButton("BACK" , textButtonStyle);
@@ -49,24 +40,23 @@ public class ModeScreen extends GolfScreen {
         this.backButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event ,float x,float y) {
-                game.showMenuScreen();
+                game.showModeScreen();
             }
         });
 
 
         LabelStyle headingStyle = new Label.LabelStyle(this.headingFont, Color.BLACK);
-        this.heading = new Label("MODE SETTINGS" , headingStyle);
+        this.heading = new Label("PLEASE TYPE YOUR NAME" , headingStyle);
         this.heading.setFontScale(2);
 
 
         this.table.add(heading);
         this.table.getCell(this.heading).spaceBottom(50);
         this.table.row();
-        this.table.add(this.singlePlayerButton);
-        this.table.getCell(this.singlePlayerButton).spaceBottom(50);
-        this.table.row();
-        this.table.add(this.autoPlayerButton);
-        this.table.getCell(this.autoPlayerButton).spaceBottom(50);
+        //this.table.add(area);
+        //this.table.row();
+        this.table.add(this.doneButton);
+        this.table.getCell(this.doneButton).spaceBottom(25);
         this.table.row();
         this.table.add(this.backButton);
         this.stage.addActor(this.table);

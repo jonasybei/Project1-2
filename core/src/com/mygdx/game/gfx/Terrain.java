@@ -1,8 +1,6 @@
-package com.mygdx.game;
+package com.mygdx.game.gfx;
 
 import com.badlogic.gdx.math.Vector2;
-
-import java.lang.Math.*;
 
 //This class computes the terrain with the use of functions. Those can be found here:
 //https://docs.google.com/document/d/1ZUv9NAnBHs384mxa-9tkk39cExyGSKAK1exx1yJGvn0/edit?usp=sharing

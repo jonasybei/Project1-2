@@ -1,7 +1,4 @@
-package com.mygdx.game;
-
-import java.io.*;
-import java.util.*;
+package com.mygdx.game.io;
 
 public class Reader {
 //

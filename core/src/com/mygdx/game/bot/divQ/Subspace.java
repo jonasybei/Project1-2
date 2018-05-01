@@ -1,3 +1,6 @@
+package com.mygdx.game.bot.divQ;
+
+import com.mygdx.game.lib.Point;
 import java.util.ArrayList;
 
 public class Subspace {
@@ -20,7 +23,7 @@ public class Subspace {
   }
 
   public ArrayList<Subspace> getSubspaces(){
-      ArrayList<Subspace> result = new ArrayList<Subspace>();
+      ArrayList<Subspace> result = new ArrayList<>();
       Point middleUp = new Point(middle.getX(), upLeft.getY());
       Point middleLeft = new Point(upLeft.getX(), middle.getY());
       Point middleRight = new Point(downRight.getX(), middle.getY());

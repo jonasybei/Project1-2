@@ -17,7 +17,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.mygdx.game.*;
+import com.mygdx.game.gfx.*;
 import com.mygdx.managers.CrazyPuttingGame;
 
 import java.util.ArrayList;
@@ -207,7 +207,7 @@ public class GameScreenAuto extends InputAdapter implements Screen {
         renderer = new ShapeRenderer();
         batch = new SpriteBatch();
 
-        viewport = new ExtendViewport(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGTH);
+        //viewport = new ExtendViewport(stage.getWidth(), stage.getHeight());
         Gdx.input.setInputProcessor(this);
 
     }

@@ -1,5 +1,4 @@
-import java.util.*;
-import java.*;
+package com.mygdx.game.io;
 
 //This parser utilizes the "Shunting-yard algorithm".
 //A detailed explanation about this algorithm can be found here: https://en.wikipedia.org/wiki/Shunting-yard_algorithm
