@@ -14,6 +14,8 @@ public class GolfBot {
       //compute power
       //shoot
     } else {
+      //Start the algorithm.
+      ArrayList<Point> points = new ArrayList<Point>();
 
     }
     return null;
