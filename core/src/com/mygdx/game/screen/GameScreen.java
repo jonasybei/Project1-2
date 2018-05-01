@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.screen;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.mygdx.game.*;
 import com.mygdx.managers.CrazyPuttingGame;
 
 import java.util.ArrayList;
@@ -107,7 +108,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
 
                 pos=rollingBall.getNewPosition();
-                ball.transform.setTranslation(pos.x,(float)Terrain.compute(level, pos.x, pos.y)/2 + 0.5f, pos.y);
+                ball.transform.setTranslation(pos.x,(float) Terrain.compute(level, pos.x, pos.y)/2 + 0.5f, pos.y);
 
                 Vector3 tmpPos = rollingBall.getPosition();
                 float mu = 0.3f;
@@ -126,10 +127,6 @@ public class GameScreen extends InputAdapter implements Screen {
             axe.y = 1;
             axe.z = 0;
             this.arrow3D.transform.setToRotationRad(axe,convertDegreeToRadians());
-
-
-
-
 
 
             Gdx.gl.glClearColor(0f, 0.5f, 0.5f, 1f);

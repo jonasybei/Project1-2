@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 
-class Map {
+public class Map {
     private final double sandFrinction = 0.6;
     private final double grassFriction = 0.3;
 

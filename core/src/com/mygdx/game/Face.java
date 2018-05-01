@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder.VertexInfo;
 
 
-class Face {
+public class Face {
 
     private VertexInfo viA;
     private VertexInfo viB;
@@ -18,7 +18,7 @@ class Face {
     private static int ID = 0;
     private Color color;
 
-    Face(Vector3 a, Vector3 b, Vector3 c, Color color) {
+    public Face(Vector3 a, Vector3 b, Vector3 c, Color color) {
         p1 = a;
         p2 = b;
         p3 = c;

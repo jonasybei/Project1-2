@@ -1,4 +1,8 @@
+package com.mygdx.game;
+
+import java.awt.*;
 import java.util.ArrayList;
+
 
 public class GolfBot {
 

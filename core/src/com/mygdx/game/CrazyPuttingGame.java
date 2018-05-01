@@ -4,6 +4,7 @@ package com.mygdx.managers;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.mygdx.game.*;
+import com.mygdx.game.screen.*;
 
 public class CrazyPuttingGame extends Game{
 

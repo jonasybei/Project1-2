@@ -25,7 +25,7 @@ public class Parser {
 		} else if(function.substring(0, 3).equals("tan")) {
 			return Math.tan(calculate(function.substring(3), x, y));
 		}
-		
+		return 0;
 	}
 
 	public static void main(String[] agrs) {

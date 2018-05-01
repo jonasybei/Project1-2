@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.screen;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
@@ -9,10 +9,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.managers.CrazyPuttingGame;
@@ -24,15 +26,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.graphics.Color;
 
 
-public class ModeScreen extends InputAdapter implements Screen{
+
+public class ScoreScreen extends InputAdapter implements Screen{
     private CrazyPuttingGame game;
     private FitViewport viewport;
     private Stage stage;
     private TextureAtlas atlas;
     private Skin skin;
     private Table table;
-    private TextButton singlePlayerButton;
-    private TextButton autoPlayerButton;
+    private TextButton user1Button;
+    private TextButton user2Button;
+    private TextButton user3Button;
     private TextButton backButton;
     private BitmapFont font;
     private BitmapFont headingFont;
@@ -40,7 +44,7 @@ public class ModeScreen extends InputAdapter implements Screen{
     private Texture background;
 
 
-    public ModeScreen(CrazyPuttingGame game){
+    public ScoreScreen(CrazyPuttingGame game){
         this.game = game;
     }
 
@@ -48,7 +52,7 @@ public class ModeScreen extends InputAdapter implements Screen{
     public void render (float delta) {
         Gdx.gl.glClearColor(0,1,0,0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        background = new Texture("core/assets/golf.9.png");
+        this.background = new Texture("core/assets/golf.9.png");
 
         this.stage.act(delta);
         stage.getBatch().begin();
@@ -60,11 +64,12 @@ public class ModeScreen extends InputAdapter implements Screen{
     @Override
     public void show(){
         this.stage = new Stage();
-        this.atlas = new TextureAtlas("C:\\Users\\matte.LAPTOP-FLG8V3QC\\Documents\\UM\\PROJECTS\\Project.Putting\\core\\assets\\button.pack");
+        this.atlas = new TextureAtlas("core/assets/button.pack");
         this.skin = new Skin(atlas);
         this.table = new Table(skin);
-        this.headingFont = new BitmapFont(Gdx.files.internal("core/assets/fonts/font.fnt"));
         this.font = new BitmapFont();
+        this.headingFont = new BitmapFont(Gdx.files.internal("core/assets/fonts/font.fnt"));
+
         table.setBounds(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
         TextButtonStyle textButtonStyle = new TextButtonStyle();
@@ -75,24 +80,32 @@ public class ModeScreen extends InputAdapter implements Screen{
         textButtonStyle.font = this.font;
         textButtonStyle.fontColor = Color.BLACK;
 
-        this.singlePlayerButton = new TextButton("SINGLE PLAYER" , textButtonStyle);
-        this.singlePlayerButton.addListener(new ClickListener(){
+        this.user1Button = new TextButton("USER 1" , textButtonStyle);
+        this.user1Button.pad(20);
+        this.user1Button.addListener(new ClickListener(){
             @Override
-            public void clicked(InputEvent event, float x,float y){
-               game.showNameScreen();
+            public void clicked(InputEvent event ,float x,float y) {
+                game.showUser1Screen();
+
             }
         });
-        this.singlePlayerButton.pad(20);
 
-        this.autoPlayerButton = new TextButton("AUTO" , textButtonStyle);
-        this.autoPlayerButton.addListener(new ClickListener(){
+        this.user2Button = new TextButton("USER 2" , textButtonStyle);
+        this.user2Button.pad(20);
+        this.user2Button.addListener(new ClickListener(){
             @Override
-            public void clicked(InputEvent event, float x,float y){
-                game.showLevelScreenAuto();
+            public void clicked(InputEvent event ,float x,float y) {
+
             }
         });
-        this.autoPlayerButton.pad(20);
 
+        this.user3Button = new TextButton("USER 3" , textButtonStyle);
+        this.user3Button.pad(20);
+        this.user3Button.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event ,float x,float y) {
+            }
+        });
 
         this.backButton = new TextButton("BACK" , textButtonStyle);
         this.backButton.pad(20);
@@ -104,37 +117,49 @@ public class ModeScreen extends InputAdapter implements Screen{
         });
 
 
+
+
         LabelStyle headingStyle = new Label.LabelStyle(this.headingFont, Color.BLACK);
-        this.heading = new Label("MODE SETTINGS" , headingStyle);
+        this.heading = new Label("SCORE" , headingStyle);
         this.heading.setFontScale(2);
 
 
         this.table.add(heading);
         this.table.getCell(this.heading).spaceBottom(50);
         this.table.row();
-        this.table.add(this.singlePlayerButton);
-        this.table.getCell(this.singlePlayerButton).spaceBottom(50);
+        this.table.add(this.user1Button);
+        this.table.getCell(this.user1Button).spaceBottom(25);
         this.table.row();
-        this.table.add(this.autoPlayerButton);
-        this.table.getCell(this.autoPlayerButton).spaceBottom(50);
+        this.table.add(this.user2Button);
+        this.table.getCell(this.user2Button).spaceBottom(25);
+        this.table.row();
+        this.table.add(this.user3Button);
+        this.table.getCell(this.user3Button).spaceBottom(25);
         this.table.row();
         this.table.add(this.backButton);
         this.stage.addActor(this.table);
         Gdx.input.setInputProcessor(stage);
     }
 
+
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         return true;
     }
+
+
     @Override
     public void pause() {}
+
     @Override
     public void resume() {}
+
     @Override
     public void hide() {}
+
     @Override
     public void dispose () {}
+
     @Override
     public void resize(int width, int height) {}
 }
