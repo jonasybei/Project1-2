@@ -10,6 +10,11 @@ import java.lang.Math.*;
 
 public class Terrain {
 	public static double compute(int terrain, double x, double y) {
+		int a,b,i,j;
+		float c,d;
+		Matrix[][] coefficient;
+		Matrix current;
+		float position=0;
 		if (terrain == 1) {
 			//(e^x-e^y)/2000 - 5*e^(-x^2-y^2)
 			return (((Math.exp(x)-Math.exp(y))/2000)-(5*Math.exp(-Math.pow(x, 2)-Math.pow(y, 2))));
@@ -28,7 +33,21 @@ public class Terrain {
 			return (-Math.sin(y/5) + 1.5*Math.exp(-Math.pow(x, 2)-Math.pow(y, 2)) + 0.5);
 		} else if( terrain == 6) {
 			//abs(x/y)/2
-			return (Math.abs(x/y)/2);
+			a=(int) (x+10)/4;
+			b=(int) (y+10)/4;
+			c=(float) ((x+10)%4)/4;
+			d=(float) ((y+10)%4)/4;
+			if(a==5) a=4;
+			if(b==5) b=4;
+			Spline.makeTerrain(a,b);
+			coefficient = Spline.getTotalMatrix();
+			current = coefficient[a][b];
+			for(i=0;i<4;i++) {
+				for(j=0;j<4;j++) {
+					position=position+ (float) (current.getCoefficient(i,j)*Math.pow(c,i)*Math.pow(d,j));
+				}
+			}
+			return position;
 		}
 		return 1;
 		//return null;
@@ -41,7 +60,7 @@ public class Terrain {
 			case (2): return new Vector2(-8,0);
 			case (3): return new Vector2(-7,-7);
 			case (4): return new Vector2(6,4);
-			case (5): return new Vector2(-5,-5);
+			case (5): return new Vector2( -5,-5);
 			case (6): return new Vector2(0,0);
 			default: return new Vector2(0,0);
 		}
