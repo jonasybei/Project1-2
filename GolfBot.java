@@ -2,36 +2,52 @@ import java.util.ArrayList;
 
 public class GolfBot {
 
-  private int terrain;
+  //index of terrain
+  private int terrainIndex;
 
-  public GolfBot(int terrain) {
-    this.terrain = terrain;
+  public GolfBot(int terrainIndex) {
+    this.terrainIndex = terrainIndex;
   }
 
-  public int[] play(Point start, Point goal){
+  public void play(Point start, Point goal){
     //if we can reach the goal in one shot, go for it!
-    if(canReachGoal(start, goal)) {
-      //compute power
-      //shoot
+    if(canReach(start, goal)) {
+      shoot(start, goal);
     } else {
       //Start the algorithm.
-      ArrayList<Point> points = new ArrayList<Point>();
-
+      //For now, the bot only shoots twice. This should be enough.
+      boolean done = false;
+      //Specify the points!
+      Subspace terrainSpace = new Subspace();
+      ArrayList<Subspace> subspaces = terrainSpace.getSubspaces();
+      while(!done) {
+        
+      }
     }
     return null;
   }
 
-  public boolean canReachGoal(Point point, Point goal){
-    int steps = 100; //This is wrong! MUST BE CHANGED!
+  //computes the power required from start to finish
+  public int computePower(Point start, Point goal) {
+    //???
+    return 0;
+  }
+
+
+  public void shoot(Point start, Point goal) {
+    //???
+  }
+
+  public boolean canReach(Point point, Point goal){
+    int steps = 10000; //This is wrong! MUST BE CHANGED!
 
     for(int i = 1; i < steps; i++) {
       double t = i/steps;
-      if(Terrain.compute(terrain, (point.getX() + t * (goal.getX() - point.getX())), (point.getY() + t * (goal.getY() - point.getY()))) < 0) {
+      if(Terrain.compute(terrainIndex, (point.getX() + t * (goal.getX() - point.getX())), (point.getY() + t * (goal.getY() - point.getY()))) < 0) {
 
         return false;
       }
     }
     return true;
   }
-
 }
