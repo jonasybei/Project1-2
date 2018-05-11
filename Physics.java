@@ -32,20 +32,20 @@ public class Physics {
   //fourth.order runge-Kutta
   public double xRungeKutta(double wi, double ti){
     double result;
-    int k1 = H * xSlopeCalculator(ti, wi);
-    int k2 = H * xSlopeCalculator(ti + H/3, wi + k1/3);
-    int k3 = H * xSlopeCalculator(ti + 2/3 * H, w - k1/3 + k2);
-    int k4 = H * xSlopeCalculator(ti + H, wi + k1 - k2 + k3);
+    double k1 = H * xSlopeCalculator(ti, wi);
+    double k2 = H * xSlopeCalculator(ti + H/3, wi + k1/3);
+    double k3 = H * xSlopeCalculator(ti + 2/3 * H, w - k1/3 + k2);
+    double k4 = H * xSlopeCalculator(ti + H, wi + k1 - k2 + k3);
     result =  wi + (k1 + 3 * k2 + 3 * k3 + k4)/8;
     return result;
   }
 
   public double yRungeKutta(double wi, double ti){
     double result;
-    int k1 = H * ySlopeCalculator(ti, wi);
-    int k2 = H * ySlopeCalculator(ti + H/3, wi + k1/3);
-    int k3 = H * ySlopeCalculator(ti + 2/3 * H, w - k1/3 + k2);
-    int k4 = H * ySlopeCalculator(ti + H, wi + k1 - k2 + k3);
+    double k1 = H * ySlopeCalculator(ti, wi);
+    double k2 = H * ySlopeCalculator(ti + H/3, wi + k1/3);
+    double k3 = H * ySlopeCalculator(ti + 2/3 * H, w - k1/3 + k2);
+    double k4 = H * ySlopeCalculator(ti + H, wi + k1 - k2 + k3);
     result =  wi + (k1 + 3 * k2 + 3 * k3 + k4)/8;
     return result;
   }
