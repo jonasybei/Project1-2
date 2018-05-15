@@ -14,7 +14,7 @@ public class Physics {
 
 
   public double xSlopeCalculator(){
-
+    
   }
 
   public double ySlopeCalculator(){
