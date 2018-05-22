@@ -1,161 +1,79 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.Vector2;
-import java.lang.Math;
+import com.badlogic.gdx.math.Vector3;
 
 public class Ball {
     private final double size = 0.5;
-    private final int mass = 1;
-    private final double g = 9.81; // the gravity accelertion
-    private final double h = 0.0125;
-    private final double gravityForce =  this.mass * this.g;
+    private final double G = 9.81;
+    private final double H = 0.0125;
+
     private Vector3 pos = new Vector3(); // x and y values
     private Vector3 safePosition = new Vector3();
-    private Vector3 velocity = new Vector3();
     private Vector3 lastPos = new Vector3();
-    private double lastz;
+    private Vector3 velocity = new Vector3();
+    private Vector3 acceleration = new Vector3();
     private double totalVelocity; //in m/s
-    private double alfa;
-    private double acceleration; // in m/s2
+    private double alpha;
+    //private double acceleration; // in m/s2 CHANGE
     private boolean target;
-    private int stopN = 0;
+    private double mu;
     private Map m;
-    private float slopX;
-    private float slopY;
-    private float frictX;
-    private float frictY;
+    private float xSlope;
+    private float ySlope;
+    private int stopN = 0;
 
-
-
-    public void setInitialPosition (Vector2 position, Map m) {
-        this.m = m;
-        pos.x=position.x;
-        pos.y=position.y;
-        pos.z= (float) Terrain.compute(m.getTerrain(),pos.x,pos.y);
-        lastPos.x = pos.x;
-        lastPos.y = pos.y;
-        lastPos.z = pos.z;
-        safePosition.x=pos.x;
-        safePosition.y=pos.y;
-
-    }
-
-    public void resetPosition() {
-        pos.x = safePosition.x;
-        pos.y = safePosition.y;
-        pos.z = (float) Terrain.compute(2,pos.x,pos.y);
-
-        velocity.set(0,0,0);
-        totalVelocity = 0;
-    }
-
-    public void setVelocity (float input, float alfa) {
-        totalVelocity=(input);
-
-        //velocity.x=(float)(Math.abs(totalVelocity*Math.cos(alfa)));
-        //velocity.y=(float)(Math.abs(totalVelocity*Math.sin(alfa)));
-        velocity.x=(float)(totalVelocity*Math.cos(alfa));
-        velocity.y=(float)(totalVelocity*Math.sin(alfa));
-        velocity.z=0;
-    }
-
-    public void setNewPosition (Map m) {
-        lastPos.x = pos.x;
-        lastPos.y = pos.y;
-        lastPos.z = pos.z;
-        pos.x =(float) (pos.x+h*velocity.x);
-        pos.y= (float)  (pos.y+h*velocity.y);
-        pos.z= (float)  (Terrain.compute(m.getTerrain(),pos.x,pos.y));
-    }
+    //getNewPosition;   (DONE)
+    //resetPosition     (DONE)
+    //setSafePosition   (DONE)
+    //setNewVelocity (RUNGA KUTTA)
+    //getPosition       (DONE)
+    //ResetVelocity (?) -> new shot (?) (DONE)
 
     public boolean isStationary() {
-        if(totalVelocity <= 0.5)
+        if (totalVelocity == 0)
             stopN++;
         else
             stopN = 0;
 
-        return stopN > 10;
+        return stopN > 20;
     }
 
-    public Vector3 getNewPosition () {
-        return pos;
+
+    public void setInitialPosition(Vector2 position, Map m) {
+        this.m = m;
+        pos.x = position.x;
+        pos.y = position.y;
+        pos.z = (float) Terrain.compute(m.getTerrain(), pos.x, pos.y);
+        lastPos.x = pos.x;
+        lastPos.y = pos.y;
+        lastPos.z = pos.z;
+        safePosition.x = pos.x;
+        safePosition.y = pos.y;
     }
 
-    public void setNewVelocity(double mu) {
+    public void setNewPosition(Map m) {
+        lastPos.x = pos.x;
+        lastPos.y = pos.y;
+        lastPos.z = pos.z;
+        pos.x = (float) (pos.x + H * velocity.x);
+        pos.y = (float) (pos.y + H * velocity.y);
+        pos.z = (float) (Terrain.compute(m.getTerrain(), pos.x, pos.y));
+    }
 
+
+    public float xSlopeCalculator() {
         Vector3[] array = pointsAroundTheBall();
-        this.frictX = (float) (mu * g * h);
-        this.frictY = (float) (mu * g * h);
-        this.slopX =(float)(( h * g * Math.sin(Math.atan((array[0].z-array[2].z)/2)))*2);
-        this.slopY =(float) -(( h * g * Math.sin(Math.atan((array[1].z-array[3].z)/2)))*2);
-
-        if(velocity.x > 0 && velocity.x - frictX > 0 ) {
-
-            velocity.x = (float) (velocity.x - frictX);
-            velocity.x = velocity.x - slopX;
-
-        }else if(velocity.x > 0 && velocity.x - frictX < 0) {
-            if(Math.abs(slopX) > frictX){
-                velocity.x = velocity.x - slopX;
-            }else {
-                velocity.x = 0;
-            }
-
-        }else if(velocity.x < 0 && velocity.x + frictX < 0){
-
-            velocity.x = (float) (velocity.x + frictX);
-            velocity.x = velocity.x + slopX;
-
-        }else if(velocity.x < 0 && velocity.x + frictX > 0){
-            if(Math.abs(slopX) > frictX){
-                velocity.x = velocity.x + slopX;
-            }else {
-                velocity.x = 0;
-            }
-        }
-
-
-        if(velocity.y > 0 && velocity.y - frictY >0 ) {
-
-            velocity.y = (float) (velocity.y - frictY);
-            velocity.y = velocity.y - slopY;
-
-        }else if(velocity.y > 0 && velocity.y - frictY <= 0 ){
-            if(Math.abs(slopY) > frictY){
-                velocity.y = velocity.y - slopY;
-            }else {
-                velocity.y = 0;
-            }
-
-        }else if(velocity.y < 0 && velocity.y + frictY < 0){
-
-            velocity.y = (float) (velocity.y + frictY);
-            velocity.y = velocity.y + slopY;
-
-        }else if(velocity.y < 0 && velocity.y + frictY > 0){
-            if(Math.abs(slopY) > frictY){
-                velocity.y = velocity.y + slopY;
-            }else {
-                velocity.y = 0;
-            }
-
-        }
-
-
-        //if(velocity.x > 0 || velocity.y > 0) {
-            //velocity.z = (float) (velocity.z - g * h * (pos.z - lastPos.z));
-           // velocity.z = (float) (velocity.z - g * h * (pos.z - lastPos.z));
-       //}else{
-            velocity.z = 0;
-        //}
-        totalVelocity=Math.sqrt(Math.pow(velocity.x,2)+Math.pow(velocity.y,2)+Math.pow(velocity.z,2));
-
-        System.out.println("velocity.x = "+velocity.x);
-        System.out.println("velocity.y = "+velocity.y);
-        System.out.println("velocity.z = "+velocity.z);
-        System.out.println("totalvelocity = "+totalVelocity);
+        xSlope = (float) ((H * G * Math.sin(Math.atan((array[0].z - array[2].z) / 2))) * 2);
+        return xSlope;
     }
+
+    public float ySlopeCalculator() {
+        Vector3[] array = pointsAroundTheBall();
+        ySlope = (float) -((H * G * Math.sin(Math.atan((array[1].z - array[3].z) / 2))) * 2);
+        return ySlope;
+    }
+
 
     public Vector3[] pointsAroundTheBall() {
         //0 = x+1,y  1 = x,y-1  2 = x-1,y  3 = x,y+1
@@ -166,48 +84,98 @@ public class Ball {
         array[2] = new Vector3();
         array[3] = new Vector3();
 
-        array[0].x = this.pos.x +1;
+        array[0].x = this.pos.x + 1;
         array[0].y = this.pos.y;
-        array[0].z =(float)(Terrain.compute(this.m.getTerrain(),array[0].x,array[0].y));
+        array[0].z = (float) (Terrain.compute(this.m.getTerrain(), array[0].x, array[0].y));
 
         array[1].x = this.pos.x;
-        array[1].y = this.pos.y-1;
-        array[1].z =(float)(Terrain.compute(this.m.getTerrain(),array[1].x,array[1].y));
+        array[1].y = this.pos.y - 1;
+        array[1].z = (float) (Terrain.compute(this.m.getTerrain(), array[1].x, array[1].y));
 
-        array[2].x = this.pos.x -1;
+        array[2].x = this.pos.x - 1;
         array[2].y = this.pos.y;
-        array[2].z =(float)(Terrain.compute(this.m.getTerrain(),array[2].x,array[2].y));
+        array[2].z = (float) (Terrain.compute(this.m.getTerrain(), array[2].x, array[2].y));
 
         array[3].x = this.pos.x;
-        array[3].y = this.pos.y+1;
-        array[3].z =(float)(Terrain.compute(this.m.getTerrain(),array[3].x,array[3].y));
+        array[3].y = this.pos.y + 1;
+        array[3].z = (float) (Terrain.compute(this.m.getTerrain(), array[3].x, array[3].y));
 
         return array;
-
     }
 
-    public double getSize() {
-        return size;
+    public void setSafePosition(Vector3 safe) {
+        safePosition.x = safe.x;
+        safePosition.y = safe.y;
+        safePosition.z = safe.z;
     }
 
-    public double getMass() {
-        return mass;
+    public void resetPosition() {
+        pos.x = safePosition.x;
+        pos.y = safePosition.y;
+        pos.z = safePosition.z;
+
+        velocity.set(0, 0, 0);
+        totalVelocity = 0;
+    }
+
+    public void setVelocity(float input, float alfa) {
+        totalVelocity = (input);
+        velocity.x = (float) (totalVelocity * Math.cos(alfa));
+        velocity.y = (float) (totalVelocity * Math.sin(alfa));
+        velocity.z = 0;
+    }
+
+
+    // We have to update mu after each timestep, to be sureit mu=muSand or mu=muGrass /// CHECK FROM BALL CLASS
+    public float setAccelerationX(float velx, float vely, float mu) {
+        acceleration.x = (float) (-G * xSlopeCalculator() - (G * mu * velx) / (Math.pow(velx, 2) + Math.pow(vely, 2)));
+        return acceleration.x;
+    }
+
+    public float setAccelerationY(float vely, float velx, float mu) {
+        acceleration.y = (float) (-G * ySlopeCalculator() - (G * mu * vely) / (Math.pow(velx, 2) + Math.pow(vely, 2)));
+        return acceleration.y;
+    }
+
+
+    //fourth.order runge-Kutta
+    public void xRungeKutta(float mu) {
+        float k1 = (float) H * setAccelerationX(velocity.x, velocity.y, mu);
+        float k2 = (float) H * setAccelerationX(velocity.x + k1 / 3, velocity.y, mu);
+        float k3 = (float) H * setAccelerationX(velocity.x - k1 / 3 + k2, velocity.y, mu);
+        float k4 = (float) H * setAccelerationX(velocity.x + k1 - k2 + k3, velocity.y, mu);
+        velocity.x = velocity.x + (k1 + 3 * k2 + 3 * k3 + k4) / 8;
+    }
+
+    public void yRungeKutta(float mu) {
+        float k1 = (float) H * setAccelerationY(velocity.y, velocity.x, mu);
+        float k2 = (float) H * setAccelerationY(velocity.y + k1 / 3, velocity.x, mu);
+        float k3 = (float) H * setAccelerationY(velocity.y - k1 / 3 + k2, velocity.x, mu);
+        float k4 = (float) H * setAccelerationY(velocity.y + k1 - k2 + k3, velocity.x, mu);
+        velocity.y = velocity.y + (k1 + 3 * k2 + 3 * k3 + k4) / 8;
+    }
+
+    public void resetVelocity() {
+        velocity.set(0, 0, 0);
+        totalVelocity = 0;
+    }
+
+    public float getXSlope() {
+        return xSlope;
+    }
+
+    public float getYSlope() {
+        return ySlope;
     }
 
     public Vector3 getPosition() {
         return pos;
     }
 
-    public Vector3 getVelocity() {
-        return velocity;
+    public Vector3 getNewPosition() {
+        return pos;
     }
 
-    public double getAcceleration() {
-        return acceleration;
-    }
-
-    public void resetVelocity() {
-        velocity.set(0,0,0);
-        totalVelocity = 0;
-    }
 }
+//wi = xVelocity
+//ti = x

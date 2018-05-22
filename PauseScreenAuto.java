@@ -21,7 +21,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.managers.CrazyPuttingGame;
 
 
-public class PauseScreen extends InputAdapter implements Screen {
+public class PauseScreenAuto extends InputAdapter implements Screen {
     private CrazyPuttingGame game;
     private FitViewport viewport;
     private Stage stage;
@@ -37,7 +37,7 @@ public class PauseScreen extends InputAdapter implements Screen {
     private Texture background;
 
 
-    public PauseScreen(CrazyPuttingGame game) {
+    public PauseScreenAuto(CrazyPuttingGame game) {
         this.game = game;
     }
 
@@ -78,7 +78,7 @@ public class PauseScreen extends InputAdapter implements Screen {
         this.playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.showLevelScreen();
+                game.showLevelScreenAuto();
 
             }
         });

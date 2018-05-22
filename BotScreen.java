@@ -21,23 +21,26 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.managers.CrazyPuttingGame;
 
 
-public class PauseScreen extends InputAdapter implements Screen {
+public class BotScreen extends InputAdapter implements Screen {
     private CrazyPuttingGame game;
     private FitViewport viewport;
     private Stage stage;
     private TextureAtlas atlas;
     private Skin skin;
     private Table table;
-    private TextButton playButton;
-    private TextButton scoreButton;
-    private TextButton exitButton;
+    private TextButton alg1;
+    private TextButton alg2;
+    private TextButton alg3;
+    private TextButton back;
     private BitmapFont font;
     private BitmapFont headingFont;
     private Label heading;
     private Texture background;
+    private int level;
 
 
-    public PauseScreen(CrazyPuttingGame game) {
+    public BotScreen(CrazyPuttingGame game, int level) {
+        this.level = level;
         this.game = game;
     }
 
@@ -46,6 +49,7 @@ public class PauseScreen extends InputAdapter implements Screen {
         Gdx.gl.glClearColor(0, 1, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         background = new Texture("core/assets/golf.9.png");
+
 
         this.stage.act(delta);
         stage.getBatch().begin();
@@ -60,9 +64,8 @@ public class PauseScreen extends InputAdapter implements Screen {
         this.atlas = new TextureAtlas("C:\\Users\\matte.LAPTOP-FLG8V3QC\\Documents\\University Maastricht\\PROJECTS\\Project.Putting\\core\\assets\\button.pack");
         this.skin = new Skin(atlas);
         this.table = new Table(skin);
-        this.headingFont = new BitmapFont(Gdx.files.internal("core/assets/fonts/font.fnt"));
         this.font = new BitmapFont();
-        this.headingFont = new BitmapFont();
+        this.headingFont = new BitmapFont(Gdx.files.internal("core/assets/fonts/font.fnt"));
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         TextButtonStyle textButtonStyle = new TextButtonStyle();
@@ -73,44 +76,67 @@ public class PauseScreen extends InputAdapter implements Screen {
         textButtonStyle.font = this.font;
         textButtonStyle.fontColor = Color.BLACK;
 
-        this.playButton = new TextButton("LEVELS", textButtonStyle);
-        this.playButton.pad(20);
-        this.playButton.addListener(new ClickListener() {
+        this.alg1 = new TextButton("ALGORITHM 1", textButtonStyle);
+        this.alg1.pad(20);
+        this.alg1.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.showLevelScreen();
+                game.showGameScreenAuto(level, 1);
+
 
             }
         });
 
-
-        this.exitButton = new TextButton("EXIT THE GAME", textButtonStyle);
-        this.exitButton.pad(20);
-        this.exitButton.addListener(new ClickListener() {
+        this.alg2 = new TextButton("ALGORITHM 2", textButtonStyle);
+        this.alg2.pad(20);
+        this.alg2.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.showMenuScreen();
+                game.showGameScreenAuto(level, 2);
+
+            }
+        });
+
+        this.alg3 = new TextButton("ALGORITHM 3", textButtonStyle);
+        this.alg3.pad(20);
+        this.alg3.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.showGameScreenAuto(level, 3);
+            }
+        });
+
+        this.back = new TextButton("BACK", textButtonStyle);
+        this.back.pad(20);
+        this.back.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.showLevelScreenAuto();
             }
         });
 
 
         LabelStyle headingStyle = new Label.LabelStyle(this.headingFont, Color.BLACK);
-        this.heading = new Label("PAUSE", headingStyle);
-        this.heading.setFontScale(4);
+        this.heading = new Label("CRAZY PUTTING", headingStyle);
+        this.heading.setFontScale(2);
 
 
         this.table.add(heading);
         this.table.getCell(this.heading).spaceBottom(100);
         this.table.row();
-        this.table.add(this.playButton);
-        this.table.getCell(this.playButton).spaceBottom(50);
+        this.table.add(this.alg1);
+        this.table.getCell(this.alg1).spaceBottom(50);
         this.table.row();
-        this.table.add(this.scoreButton);
-        this.table.getCell(this.scoreButton).spaceBottom(50);
+        this.table.add(this.alg2);
+        this.table.getCell(this.alg2).spaceBottom(50);
         this.table.row();
-        this.table.add(this.exitButton);
+        this.table.add(this.alg3);
+        this.table.getCell(this.alg3).spaceBottom(50);
+        this.table.row();
+        this.table.add(this.back);
         this.stage.addActor(this.table);
         Gdx.input.setInputProcessor(stage);
+
     }
 
 
@@ -139,5 +165,4 @@ public class PauseScreen extends InputAdapter implements Screen {
     public void resize(int width, int height) {
     }
 }
-
 

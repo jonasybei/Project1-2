@@ -1,11 +1,10 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 
-class Map {
+public class Map {
     private final double sandFrinction = 0.6;
     private final double grassFriction = 0.3;
 
@@ -21,7 +20,7 @@ class Map {
     private int width;
     private int height;
 
-    Map(ArrayList<Tree> atreeMap, ArrayList<SandSpot> asandMap, int t){
+    Map(ArrayList<Tree> atreeMap, ArrayList<SandSpot> asandMap, int t) {
         treeMap = atreeMap;
         sandMap = asandMap;
 

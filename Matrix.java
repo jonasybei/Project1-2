@@ -65,7 +65,7 @@ public class Matrix {
     public void createZ () {    //ogni chiamata crea nuovi punti
         Z[0][0]=1;
         Z[0][1]=1;
-        Z[0][2]=-1;
+        Z[0][2]=1;
         Z[0][3]=1;
         Z[0][4]=1;
         Z[0][5]=0;
@@ -94,7 +94,7 @@ public class Matrix {
         Z[4][4]=1;
         Z[4][5]=0;
         Z[5][0]=1;
-        Z[5][1]=-1;
+        Z[5][1]=2;
         Z[5][2]=1;
         Z[5][3]=1;
         Z[5][4]=1;

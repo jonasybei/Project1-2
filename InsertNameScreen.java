@@ -1,30 +1,24 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.managers.CrazyPuttingGame;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.graphics.Color;
 
 
-
-public class InsertNameScreen extends InputAdapter implements Screen{
+public class InsertNameScreen extends InputAdapter implements Screen {
     private CrazyPuttingGame game;
     private FitViewport viewport;
     private Stage stage;
@@ -41,13 +35,13 @@ public class InsertNameScreen extends InputAdapter implements Screen{
     private TextField area;
 
 
-    public InsertNameScreen(CrazyPuttingGame game){
+    public InsertNameScreen(CrazyPuttingGame game) {
         this.game = game;
     }
 
     @Override
-    public void render (float delta) {
-        Gdx.gl.glClearColor(0,1,0,0);
+    public void render(float delta) {
+        Gdx.gl.glClearColor(0, 1, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         this.background = new Texture("core/assets/golf.9.png");
 
@@ -59,9 +53,9 @@ public class InsertNameScreen extends InputAdapter implements Screen{
     }
 
     @Override
-    public void show(){
+    public void show() {
         this.stage = new Stage();
-        this.atlas = new TextureAtlas("C:\\Users\\matte.LAPTOP-FLG8V3QC\\Documents\\UM\\PROJECTS\\Project.Putting\\core\\assets\\button.pack");
+        this.atlas = new TextureAtlas("C:\\Users\\matte.LAPTOP-FLG8V3QC\\Documents\\University Maastricht\\PROJECTS\\Project.Putting\\core\\assets\\button.pack");
         this.skin = new Skin(atlas);
         this.skin2 = new Skin();
         this.table = new Table(skin);
@@ -69,7 +63,7 @@ public class InsertNameScreen extends InputAdapter implements Screen{
         this.headingFont = new BitmapFont(Gdx.files.internal("core/assets/fonts/font.fnt"));
         //this.area = new TextField("hello",this.skin);
 
-        table.setBounds(0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         TextButtonStyle textButtonStyle = new TextButtonStyle();
         textButtonStyle.up = skin.getDrawable("button_up");
@@ -79,32 +73,34 @@ public class InsertNameScreen extends InputAdapter implements Screen{
         textButtonStyle.font = this.font;
         textButtonStyle.fontColor = Color.BLACK;
 
-        this.doneButton = new TextButton("DONE" , textButtonStyle);
+        this.doneButton = new TextButton("DONE", textButtonStyle);
         this.doneButton.pad(20);
-        this.doneButton.addListener(new ClickListener(){
+        this.doneButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event ,float x,float y) {
+            public void clicked(InputEvent event, float x, float y) {
                 game.showLevelScreen();
 
             }
         });
 
 
-        this.backButton = new TextButton("BACK" , textButtonStyle);
+        this.backButton = new TextButton("BACK", textButtonStyle);
         this.backButton.pad(20);
-        this.backButton.addListener(new ClickListener(){
+        this.backButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event ,float x,float y) {
+            public void clicked(InputEvent event, float x, float y) {
                 game.showModeScreen();
             }
         });
 
 
-
-
         LabelStyle headingStyle = new Label.LabelStyle(this.headingFont, Color.BLACK);
-        this.heading = new Label("PLEASE TYPE YOUR NAME" , headingStyle);
+        this.heading = new Label("PLEASE TYPE YOUR NAME", headingStyle);
         this.heading.setFontScale(2);
+
+        /*TextField usernameTextField = new TextField("", this.skin);
+        usernameTextField.setPosition(24, 73);
+        usernameTextField.setSize(88, 14);*/
 
 
         this.table.add(heading);
@@ -117,7 +113,9 @@ public class InsertNameScreen extends InputAdapter implements Screen{
         this.table.row();
         this.table.add(this.backButton);
         this.stage.addActor(this.table);
+        //this.stage.addActor(usernameTextField);            // <-- Actor now on stage
         Gdx.input.setInputProcessor(stage);
+
     }
 
 
@@ -128,18 +126,23 @@ public class InsertNameScreen extends InputAdapter implements Screen{
 
 
     @Override
-    public void pause() {}
+    public void pause() {
+    }
 
     @Override
-    public void resume() {}
+    public void resume() {
+    }
 
     @Override
-    public void hide() {}
+    public void hide() {
+    }
 
     @Override
-    public void dispose () {}
+    public void dispose() {
+    }
 
     @Override
-    public void resize(int width, int height) {}
+    public void resize(int width, int height) {
+    }
 }
 
