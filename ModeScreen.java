@@ -20,10 +20,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.managers.CrazyPuttingGame;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-
 
 public class ModeScreen extends InputAdapter implements Screen {
     private CrazyPuttingGame game;
@@ -80,11 +76,6 @@ public class ModeScreen extends InputAdapter implements Screen {
         this.singlePlayerButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                try {
-                    Desktop.getDesktop().open(new File("C:\\Users\\matte.LAPTOP-FLG8V3QC\\Desktop\\ScoreExcel\\Scores.xlsx"));
-                } catch (IOException e) {
-                    System.out.println("Textfile was not found.");
-                }
                 game.showNameScreen();
             }
         });

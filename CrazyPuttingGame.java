@@ -5,9 +5,10 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.mygdx.game.*;
 
-public class CrazyPuttingGame extends Game{
+public class CrazyPuttingGame extends Game {
 
     private GameScreen game;
+    private GameScreenAuto autoGame;
 
     @Override
     public void create() {
@@ -19,7 +20,7 @@ public class CrazyPuttingGame extends Game{
     }
 
     public void showGameScreen(int level) {
-        this.game = new GameScreen(this,level);
+        this.game = new GameScreen(this, level);
         setScreen(this.game);
     }
 
@@ -27,43 +28,49 @@ public class CrazyPuttingGame extends Game{
         setScreen(new ModeScreen(this));
     }
 
-    public void showScoreScreen() {
-        setScreen(new ScoreScreen(this));
+    public void showBotScreen(int level) {
+        setScreen(new BotScreen(this, level));
     }
 
-    public void showUser1Screen() {
-        setScreen(new User1Screen(this));
-    }
-
-    public void showLevelScreen(){
+    public void showLevelScreen() {
         setScreen(new LevelScreen(this));
     }
 
-    public void showNameScreen(){
+    public void showNameScreen() {
         setScreen(new InsertNameScreen(this));
     }
 
-    public void showWinScreen(int score){
-        setScreen(new WinScreen(this, score));
+    public void showWinScreen(int score, int level) {
+        setScreen(new WinScreen(this, score, level));
     }
 
-    public void showLevelScreenAuto(){
+    public void showWinScreenAuto(int score, int level) {
+        setScreen(new WinScreenAuto(this, score, level));
+    }
+
+
+    public void showLevelScreenAuto() {
         setScreen(new LevelScreenAuto(this));
     }
 
-    public void showPauseScreen(){
+    public void showPauseScreen() {
         setScreen(new PauseScreen(this));
     }
 
-    public void showGameScreenAuto(int level){
-        setScreen(new GameScreenAuto(this,level));
+    public void showPauseScreenAuto() {
+        setScreen(new PauseScreenAuto(this));
     }
 
-    public void resumeGameScreen(){
+    public void showGameScreenAuto(int level, int alg) {
+        this.autoGame = new GameScreenAuto(this, level, alg);
+        setScreen(this.autoGame);
+    }
+
+    public void resumeGameScreen() {
         setScreen(this.game);
     }
 
-    public void exitTheGame(){
+    public void exitTheGame() {
         Gdx.app.exit();
     }
 
